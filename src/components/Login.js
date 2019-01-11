@@ -1,5 +1,8 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Link, Redirect } from "react-router-dom";
 import logo from "../images/communityBank.svg";
+import { login } from "../ducks/user";
 
 class Login extends Component {
   constructor(props) {
@@ -9,16 +12,27 @@ class Login extends Component {
       password: ""
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    this.props.login(this.state.username, this.state.password);
+  }
+
   render() {
+    console.log(this.props.user);
+    if (this.props.user.username) {
+      return <Redirect push to="/account" />;
+    }
     return (
       <div>
         <img src={logo} style={{ maxWidth: "100px" }} />
-        <form>
+        <form onSubmit={this.handleSubmit}>
           <input
             onChange={this.handleChange}
             value={this.state.username}
@@ -34,9 +48,19 @@ class Login extends Component {
           />
           <button>Login</button>
         </form>
+        <Link to="/signup">Sign Up</Link>
       </div>
     );
   }
 }
 
-export default Login;
+const mapStateToProps = state => {
+  return {
+    user: state.user
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  { login: login }
+)(Login);

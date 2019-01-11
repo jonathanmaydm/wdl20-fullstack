@@ -13,9 +13,9 @@ class App extends Component {
       <Provider store={store}>
         <Router>
           <div>
-            <Route path="/account" component={Account} />
-            <Route path="/signup" component={Signup} />
-            <Route path="/" component={Login} />
+            <Route path="/account" exact component={Account} />
+            <Route path="/signup" exact component={Signup} />
+            <Route path="/" exact component={Login} />
           </div>
         </Router>
       </Provider>
